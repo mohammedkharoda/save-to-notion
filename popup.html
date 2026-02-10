@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Save to Notion</h1>
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <button id="theme-toggle" class="btn-icon" title="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="settings-btn" class="btn-icon" title="Settings">&#9881;</button>
+      </div>
+    </header>
+
+    <!-- Progress Dashboard -->
+    <div id="stats-section" class="hidden">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span id="stat-total" class="stat-value">-</span>
+          <span class="stat-label">Solved</span>
+        </div>
+        <div class="stat-item">
+          <span id="stat-easy" class="stat-value easy-text">-</span>
+          <span class="stat-label">Easy</span>
+        </div>
+        <div class="stat-item">
+          <span id="stat-medium" class="stat-value medium-text">-</span>
+          <span class="stat-label">Medium</span>
+        </div>
+        <div class="stat-item">
+          <span id="stat-hard" class="stat-value hard-text">-</span>
+          <span class="stat-label">Hard</span>
+        </div>
+      </div>
+      <div id="streak-row" class="streak-row hidden">
+        <span id="streak-value"></span>
+      </div>
+    </div>
+
+    <!-- Not configured warning -->
+    <div id="not-configured" class="hidden">
+      <p class="hint">Set up your Notion API key and database first.</p>
+      <button id="open-settings-btn" class="btn btn-primary full-width">Open Settings</button>
+    </div>
+
+    <!-- Configured status -->
+    <div id="configured-section" class="hidden">
+      <div class="status-row">
+        <span class="status-dot green"></span>
+        <span id="db-name">Database</span>
+      </div>
+    </div>
+
+    <!-- Not on LeetCode warning -->
+    <div id="not-leetcode" class="hidden">
+      <p class="hint">Navigate to a LeetCode problem page to extract data.</p>
+    </div>
+
+    <!-- Duplicate Warning -->
+    <div id="duplicate-warning" class="hidden">
+      <div class="duplicate-box">
+        <p>This problem already exists in your Notion database.</p>
+        <div class="duplicate-actions">
+          <button id="save-new-btn" class="btn btn-small">Save as New</button>
+          <button id="append-solution-btn" class="btn btn-small btn-accent">Add New Solution</button>
+          <a id="view-existing-btn" class="btn-link" href="#" target="_blank">View Existing</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem Info (auto-extracted) -->
+    <div id="problem-section" class="hidden">
+      <div class="problem-header">
+        <span id="problem-title" class="problem-title"></span>
+        <span id="problem-difficulty" class="badge"></span>
+      </div>
+      <div id="platform-badge" class="platform-badge hidden"></div>
+      <div id="problem-tags" class="tags"></div>
+
+      <div id="code-info" class="info-row hidden">
+        <span class="label">Code:</span>
+        <span id="code-lang"></span>
+      </div>
+
+      <div id="submission-info" class="info-row hidden">
+        <span class="label">Submission:</span>
+        <span id="submission-stats"></span>
+      </div>
+
+      <!-- Approach Chip -->
+      <div id="approach-info" class="hidden">
+        <span id="approach-chip" class="approach-chip"></span>
+      </div>
+
+      <!-- Related Problems Count -->
+      <div id="related-info" class="info-row hidden">
+        <span class="label">Related:</span>
+        <span id="related-count"></span>
+      </div>
+
+      <hr>
+
+      <!-- AI Analysis Status -->
+      <div id="ai-status" class="hidden">
+        <span class="ai-badge">Analyzing with AI...</span>
+      </div>
+
+      <!-- User Input Fields -->
+      <div class="field">
+        <label for="runtime-input">Time Complexity</label>
+        <input type="text" id="runtime-input" placeholder="e.g. O(n)">
+      </div>
+
+      <div class="field">
+        <label for="space-input">Space Complexity</label>
+        <input type="text" id="space-input" placeholder="e.g. O(n)">
+      </div>
+
+      <div class="field">
+        <label for="tips-input">Tips & Common Mistakes</label>
+        <textarea id="tips-input" rows="3" placeholder="Any notes, tips, or common pitfalls..."></textarea>
+      </div>
+
+      <button id="save-btn" class="btn btn-primary full-width">Save to Notion</button>
+    </div>
+
+    <!-- Status Message -->
+    <div id="status" class="hidden"></div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

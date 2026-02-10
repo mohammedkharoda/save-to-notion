@@ -1,0 +1,55 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create extension package
+      run: |
+        # Remove development files
+        rm -f .gitignore
+        rm -rf .git .github
+        rm -f SCREENSHOTS.md CONTRIBUTING.md
+
+        # Create zip file
+        zip -r extension-v${{ steps.get_version.outputs.VERSION }}.zip . \
+          -x "*.git*" \
+          -x "node_modules/*" \
+          -x "screenshots/*"
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: extension-v${{ steps.get_version.outputs.VERSION }}.zip
+        body: |
+          ## 🚀 Release v${{ steps.get_version.outputs.VERSION }}
+
+          ### Installation
+          1. Download `extension-v${{ steps.get_version.outputs.VERSION }}.zip`
+          2. Unzip the file
+          3. Go to `chrome://extensions/`
+          4. Enable "Developer mode"
+          5. Click "Load unpacked" and select the unzipped folder
+
+          ### What's Changed
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+
+          ### Support
+          - 📖 [Documentation](https://github.com/${{ github.repository }}/blob/main/README.md)
+          - 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)
+          - 💬 [Discussions](https://github.com/${{ github.repository }}/discussions)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

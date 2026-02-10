@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save to Notion - Settings</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Save to Notion - Settings</h1>
+
+    <div class="section">
+      <h2>Notion API Key</h2>
+      <p class="help">
+        Get your integration token from
+        <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a>.
+        Click your integration, then copy the "Internal Integration Secret".
+      </p>
+      <input type="password" id="api-key" placeholder="ntn_..." autocomplete="off">
+    </div>
+
+    <div class="section">
+      <h2>Database</h2>
+      <p class="help">
+        Make sure you've shared your Notion database with the integration
+        (open the database in Notion, click "..." menu > "Connections" > add your integration).
+      </p>
+      <div class="row">
+        <select id="db-select" disabled>
+          <option value="">Enter API key first...</option>
+        </select>
+        <button id="load-db-btn" class="btn" disabled>Load Databases</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Gemini API Key (Optional)</h2>
+      <p class="help">
+        Get a free API key from
+        <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>.
+        This enables auto-analysis of time/space complexity, approach detection, and tips.
+      </p>
+      <input type="password" id="gemini-api-key" placeholder="AIza..." autocomplete="off">
+    </div>
+
+    <div class="section">
+      <h2>Theme</h2>
+      <p class="help">Choose how the extension looks.</p>
+      <div class="theme-options">
+        <label class="radio-option">
+          <input type="radio" name="theme" value="system" id="theme-system">
+          <span>System Default</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="theme" value="light" id="theme-light">
+          <span>Light</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="theme" value="dark" id="theme-dark">
+          <span>Dark</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Auto-save</h2>
+      <p class="help">
+        Automatically save to Notion when a LeetCode submission is accepted.
+        Requires Gemini API key for complexity analysis.
+      </p>
+      <label class="toggle-row">
+        <input type="checkbox" id="auto-save-toggle">
+        <span>Enable auto-save on accepted submission</span>
+      </label>
+    </div>
+
+    <div class="section">
+      <h2>Keyboard Shortcuts</h2>
+      <p class="help">Quickly save problems without opening the extension popup.</p>
+      <table class="shortcuts-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Shortcut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quick Save to Notion</td>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
+          </tr>
+          <tr>
+            <td>Extract Problem Data</td>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="help" style="margin-top: 8px;">
+        <button id="open-shortcuts-settings" class="btn btn-small">Customize Shortcuts</button>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Database Schema</h2>
+      <p class="help">Your Notion database should have these columns (properties):</p>
+      <table class="properties-table">
+        <thead>
+          <tr><th>Property Name</th><th>Property Type</th><th>Status</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Name</strong></td>
+            <td>Title</td>
+            <td><span class="badge required">Required</span></td>
+            <td>Default title column</td>
+          </tr>
+          <tr>
+            <td><strong>Difficulty</strong></td>
+            <td>Select</td>
+            <td><span class="badge required">Required</span></td>
+            <td>Options: Easy, Medium, Hard</td>
+          </tr>
+          <tr>
+            <td><strong>Tags</strong></td>
+            <td>Multi-select</td>
+            <td><span class="badge required">Required</span></td>
+            <td>Problem topic tags</td>
+          </tr>
+          <tr>
+            <td><strong>Date Solved</strong></td>
+            <td>Date</td>
+            <td><span class="badge required">Required</span></td>
+            <td>Date of submission</td>
+          </tr>
+          <tr>
+            <td><strong>LeetCode URL</strong></td>
+            <td>URL</td>
+            <td><span class="badge required">Required</span></td>
+            <td>Link to the problem</td>
+          </tr>
+          <tr>
+            <td><strong>Runtime</strong></td>
+            <td>Text</td>
+            <td><span class="badge optional">Optional</span></td>
+            <td>Time complexity (e.g., O(n))</td>
+          </tr>
+          <tr>
+            <td><strong>Space</strong></td>
+            <td>Text</td>
+            <td><span class="badge optional">Optional</span></td>
+            <td>Space complexity (e.g., O(1))</td>
+          </tr>
+          <tr>
+            <td><strong>Approach</strong></td>
+            <td>Select</td>
+            <td><span class="badge optional">Optional</span></td>
+            <td>Solution approach type</td>
+          </tr>
+          <tr>
+            <td><strong>Platform</strong></td>
+            <td>Select</td>
+            <td><span class="badge optional">Optional</span></td>
+            <td>For multi-platform support</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="help-box" style="margin-top: 16px;">
+        <strong>💡 Important:</strong>
+        <ul>
+          <li>Runtime and Space columns must be <strong>Text</strong> type (not Rich Text or any other type)</li>
+          <li>Optional properties will be automatically skipped if they don't exist</li>
+          <li>The extension will retry without optional properties if they cause errors</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="save-btn" class="btn btn-primary">Save Settings</button>
+    </div>
+
+    <div id="status" class="hidden"></div>
+  </div>
+
+  <script src="options.js" type="module"></script>
+</body>
+</html>
